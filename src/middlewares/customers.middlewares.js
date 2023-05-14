@@ -1,4 +1,5 @@
 import { customerSchema } from "../schemas/customers.schemas.js"
+import { db } from "../database/database.js"
 
 
 export async function validSchemaCustomers(req, res, next){
