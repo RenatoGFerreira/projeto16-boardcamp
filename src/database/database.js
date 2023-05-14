@@ -12,4 +12,4 @@ const configDatabase = {
 //     connectionString: process.env.DATABASE_URL,
 //   });
 
-const db = new Pool(configDatabase)
+export const db = new Pool(configDatabase)
