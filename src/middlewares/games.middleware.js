@@ -13,8 +13,8 @@ export async function validSchemaGames(req, res, next){
 
     const isGameExist = await db.query(
         `
-        SELECT * FROM games WHERE name=$1,
-        `
+        SELECT * FROM games WHERE name=$1;
+        `,
         [game.name]
     )
     if (isGameExist.rowCount !== 0) return sendStatus(409)
