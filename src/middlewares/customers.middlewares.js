@@ -25,3 +25,17 @@ export async function validSchemaCustomers(req, res, next){
     res.locals.customer = customer 
     next()
 }
+
+export async function validSchemaCustomersEdit(req, res, next){
+    const customer = req.body
+
+    const validation = customerSchema.validate(customer, { abortEarly: false})
+
+    if(validation.error){
+        const errors = validation.error.details.map((detail) => detail.message)
+        return res.status(422).send(errors)
+    }
+
+    res.locals.customer = customer 
+    next()
+}
