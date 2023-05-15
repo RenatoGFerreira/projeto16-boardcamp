@@ -4,7 +4,6 @@ import { db } from "../database/database.js"
 
 export async function validSchemaCustomers(req, res, next){
     const customer = req.body
-    const { id }= req.params
 
     const validation = customerSchema.validate(customer, { abortEarly: false})
 
@@ -13,20 +12,14 @@ export async function validSchemaCustomers(req, res, next){
         return res.status(400).send(errors)
     }
 
-    // const isCustomerExist = await db.query(
-    //     `
-    //     SELECT * FROM customers WHERE cpf=$1;
-    //     `,
-    //     [customer.cpf]
-    // )
-    // if(isCustomerExist.rowCount !== 0) return res.sendStatus(409)
-
-    const isAnotherUser = await db.query(
+    const isCustomerExist = await db.query(
         `
-        SELECT * FROM customers WHERE cpf = $1 AND id <> $2;
+        SELECT * FROM customers WHERE cpf=$1;
         `,
-        [customer.cpf, id]);
-    if (isAnotherUser.rows.length > 0) return res.sendStatus(409);
+        [customer.cpf]
+    )
+
+    if(isCustomerExist.rowCount !== 0) return res.sendStatus(409)
 
 
     res.locals.customer = customer 
@@ -40,7 +33,7 @@ export async function validSchemaCustomersEdit(req, res, next){
 
     if(validation.error){
         const errors = validation.error.details.map((detail) => detail.message)
-        return res.status(400).send(errors)
+        return res.status(422).send(errors)
     }
 
     res.locals.customer = customer 
