@@ -19,7 +19,7 @@ export async function postRentals(req, res){
             [customerId, gameId, rentDate, daysRented, returnDate, originalPrice, delayFee]
         )
 
-        res.send(201)
+        res.sendStatus(201)
     }catch(err){
         res.status(500).send(err.message)
     }
