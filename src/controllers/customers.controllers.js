@@ -18,13 +18,27 @@ export async function createNewCustomer(req, res){
 
 export async function getCustomers(req, res) {
     try {
-      const customers = await db.query(
+      const {rows} = await db.query(
         `
           SELECT * FROM customers;
         `
       );
-      const customerResp = {...customers.rows, birthday: dayjs(customers.birthday).format("YYYY-MM-DD") }
-            res.status(200).send(customerResp)
+
+      if(rows){
+        const customers = rows.map((customer) => {
+            return{
+                id: customer.id,
+                name: customer.name,
+                phone: customer.phone,
+                cpf: customer.cpf,
+                birthday: dayjs(customer.birthday).format("YYYY-MM-DD")
+            }
+        })
+        res.status(200).send(customers)
+      }
+
+
+            
     } catch (err) {
       res.status(500).send(err.message);
     }
