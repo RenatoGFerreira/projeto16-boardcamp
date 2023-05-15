@@ -1,4 +1,5 @@
 import { db } from "../database/database.js"
+import dayjs from "dayjs"
 
 export async function createNewCustomer(req, res){
     const {name, phone, cpf, birthday} = res.locals.customer
@@ -7,7 +8,7 @@ export async function createNewCustomer(req, res){
         await db.query(`
             INSERT INTO customers (name, phone, cpf, birthday) VALUES ($1, $2, $3, $4);
         `,
-        [name, phone, cpf, birthday]
+        [name, phone, cpf, dayjs(birthday).format("YYYY-MM-DD")]
         )
         res.sendStatus(201)
     }catch(err){
@@ -20,7 +21,7 @@ export async function getCustomers(req, res) {
       const { rows } = await db.query(
         `
           SELECT * FROM customers;
-          `
+        `
       );
       res.status(200).send(rows);
     } catch (err) {
