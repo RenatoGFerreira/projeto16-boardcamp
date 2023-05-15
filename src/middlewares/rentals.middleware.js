@@ -50,13 +50,25 @@ export async function validSchemaRentals(req, res, next) {
 
 export async function AvailableGames(req, res, next){
     const game = res.locals.ggame
-    console.log(game.rows[0].stockTotal)
+    console.log(game.rows[0])
     try{
-        const rentals = await db.query(
-            `SELECT * FROM rentals WHERE "gameId"=$1;`,
-            [game.rows[0].id]
-            )
-        if(rentals.rows.length >= game.rows[0].stockTotal) return sendStatus(400)
+        // const rentals = await db.query(
+        //     `SELECT * FROM rentals WHERE "gameId"=$1;`,
+        //     [game.rows[0].id]
+        //     )
+        // if(rentals.rows.length > game.stockTotal) return sendStatus(400)
+
+        const rentedGames = await db.query(
+          `
+        SELECT COUNT(*) FROM rentals WHERE "gameId" = $1 AND "returnDate" IS NULL
+      `,
+          [game.gameId]
+        );
+        const availableGames = game.rows[0].stockTotal - rentedGames.rows[0].count;
+        if (availableGames <= 0) {
+          return res.status(400).send("Jogos indisponível para aluguel.");
+        }
+
 
 
     }catch(err){
