@@ -8,7 +8,7 @@ export async function createNewCustomer(req, res){
         await db.query(`
             INSERT INTO customers (name, phone, cpf, birthday) VALUES ($1, $2, $3, $4);
         `,
-        [name, phone, cpf, dayjs(birthday).format("YYYY-MM-DD")]
+        [name, phone, cpf, birthday=dayjs(birthday).format("YYYY-MM-DD")]
         )
         res.sendStatus(201)
     }catch(err){
