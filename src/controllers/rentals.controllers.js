@@ -1,6 +1,6 @@
 import { db } from "../database/database.js"
 export async function postRentals(req, res){
-    const rental = res.locals.rental
+    const {customerId, gameId, rentDate, daysRented, returnDate, originalPrice, delayFee} = res.locals.rental
 
     try{
         await db.query(
