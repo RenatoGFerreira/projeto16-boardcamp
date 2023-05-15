@@ -56,7 +56,7 @@ export async function AvailableGames(req, res, next){
             `SELECT * FROM rentals WHERE "gameId"=$1;`,
             [game.rows[0].id]
             )
-        if(rentals.rows.length > game.rows[0].stockTotal) return sendStatus(400)
+        if(rentals.length > game.stockTotal) return sendStatus(400)
 
     }catch(err){
         res.status(500).send(err.message)
