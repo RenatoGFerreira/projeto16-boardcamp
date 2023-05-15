@@ -42,7 +42,7 @@ export async function getCustomersById(req, res){
         //console.log(customer.rows[0])
             if(customer.rows.length === 0) return res.sendStatus(404)
 
-        const customerResp = {...customer.rows[0], birthday: dayjs(customer.birthday).format("YYYY-MM-DD") }
+            const customerResp = {...customer.rows[0], birthday: dayjs(customer.birthday).format("YYYY-MM-DD") }
             res.status(200).send(customerResp)
     }catch(err){
         res.status(500).send(err.message);
