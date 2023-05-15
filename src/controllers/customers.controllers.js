@@ -36,9 +36,6 @@ export async function getCustomers(req, res) {
         })
         res.status(200).send(customers)
       }
-
-
-            
     } catch (err) {
       res.status(500).send(err.message);
     }
