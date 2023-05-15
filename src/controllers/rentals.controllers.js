@@ -90,22 +90,23 @@ export async function postReturnRentals(req, res){
     }
 }
 
-export async function finishRental(req, res){
-    const { id } = req.params
+export async function deleteRental(req, res){
+    
     try{
+        const { id } = req.params
         const gameDB = await db.query(
             `
             SELECT * FROM rentals WHERE id=$1;
             `,
             [id]
         )
+        console.log(gameDB)
 
-        const rental = gameDB.rows[0]
-        if(gameDB.rowCount < 1) return res.sendStatus(404)
-        if(rental.returnDate !== null) return res.sendStatus(400)
+        if(gameDB.rowCount === 0 ) return res.sendStatus(404)
+        if(gameDB.rows[0].returnDate === null) return res.sendStatus(400)
 
         await db.query(
-            `DELETE FROM rentals WHERE id=$1;`,
+            `DELETE FROM rentals WHERE id = $1;`,
             [id]
             )
         res.sendStatus(200)
