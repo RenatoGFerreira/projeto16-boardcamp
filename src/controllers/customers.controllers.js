@@ -36,12 +36,13 @@ export async function getCustomersById(req, res){
         const customer = await db.query(
 
             `SELECT * FROM customers WHERE id= $1;`,
-            [id]
-        
+            [id]    
         )
+        //console.log(customer.rows[0])
             if(customer.rows.length === 0) return res.sendStatus(404)
 
-            res.status(200).send(customer.rows[0])
+        const customerResp = {...customer.rows[0], birthday: dayjs(customer.birthday).format("YYYY-MM-DD") }
+            res.status(200).send(customerResp)
     }catch(err){
         res.status(500).send(err.message);
     }

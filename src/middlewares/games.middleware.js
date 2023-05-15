@@ -11,14 +11,6 @@ export async function validSchemaGames(req, res, next){
         return res.status(400).send(errors)
     }
 
-    // const isGameExist = await db.query(
-    //     `
-    //     SELECT * FROM games WHERE name=$1;
-    //     `,
-    //     [game.name]
-    // )
-    // if (isGameExist.rowCount !== 0) return sendStatus(409)
-
 
     const isGameExist = await db.query(`SELECT * FROM games WHERE name=$1;`, [req.body.name]);
     if(isGameExist.rows[0]) return res.status(409).send("Já existe um jogo cadastrado com esse nome.");

@@ -27,7 +27,7 @@ export async function validSchemaRentals(req, res, next) {
     const validation = rentalSchema.validate(rental, { abortEarly: false})
     if(validation.error){
         const errors = validation.error.details.map((detail) => detail.message)
-        return res.status(422).send(errors)
+        return res.status(400).send(errors)
     }
 
     const isCostumerIdExists = await db.query(
